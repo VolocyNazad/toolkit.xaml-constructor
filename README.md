@@ -5,7 +5,7 @@
 [![GitHub release](https://img.shields.io/github/release/VolocyNazad/toolkit.xaml-constructor.svg?logo=github)](https://github.com/VolocyNazad/toolkit.xaml-constructor/releases/latest)
 [![GitHub license](https://img.shields.io/github/license/VolocyNazad/toolkit.xaml-constructor
 )](https://raw.githubusercontent.com/VolocyNazad/toolkit.xaml-constructor/main/LICENSE)
-![ci.yml](https://github.com/VolocyNazad/toolkit.xaml-constructor/workflows/.github/workflows/ci.yml/badge.svg)
+![build-and-test.yml](https://github.com/VolocyNazad/toolkit.xaml-constructor/workflows/.github/workflows/build-and-test.yml/badge.svg)
 
 C# source generator that generates a constructor from readonly fields in a class or struct for xaml design mode.
 
@@ -81,3 +81,12 @@ The type decorated with `XamlConstructor` does not have a name ending with "View
 ### XCONS06
 
 The type decorated with `XamlConstructor` already declares a parameterless constructor.
+
+## Development documentation
+
+- [Development policy](docs/policies/development.md)
+- [Repository guide and technology stack](docs/repository.md)
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes.

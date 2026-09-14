@@ -6,7 +6,6 @@
   </Configurations>
   <Folder Name="/solutionItems/">
     <File Path=".editorconfig" />
-    <File Path=".github/workflows/ci.yml" />
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
     <File Path=".globalconfig" />
@@ -19,6 +18,7 @@
     <File Path="global.json" />
     <File Path="LICENSE" />
     <File Path="README.md" />
+    <File Path="NuGet.config" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/XamlConstructor.Tests/XamlConstructor.Tests.csproj" Id="44463214-48bc-4cac-b991-9ba52c528281" />
@@ -29,4 +29,18 @@
     <BuildDependency Project="src/XamlConstructor.CodeFixes/XamlConstructor.CodeFixes.csproj" />
     <BuildDependency Project="src/XamlConstructor.Generator/XamlConstructor.Generator.csproj" />
   </Project>
+  <Folder Name="/docs/">
+    <File Path="docs/repository.md" />
+  </Folder>
+  <Folder Name="/docs/policies/">
+    <File Path="docs/policies/development.md" />
+  </Folder>
+  <Folder Name="/solutionItems/.github/workflows/">
+    <File Path=".github/workflows/build-and-test.yml" />
+    <File Path=".github/workflows/publish-nuget.yml" />
+    <File Path=".github/workflows/repository-policy.yml" />
+  </Folder>
+  <Folder Name="/solutionItems/scripts/">
+    <File Path="scripts/Validate-Repository.ps1" />
+  </Folder>
 </Solution>
