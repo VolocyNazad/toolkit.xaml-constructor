@@ -105,3 +105,5 @@ The root `.editorconfig` defines the portable formatting baseline. Existing repo
 ## Versioning and release tags
 
 The package uses MinVer 8 with stable tags in the `vMAJOR.MINOR.PATCH` format. The tag without its `v` prefix is the NuGet package version. Manual publishing accepts exactly one matching tag at HEAD and verifies that exactly the `XamlConstructor` package has the expected version before pushing to NuGet.
+
+The tagged commit must already contain the release section in `CHANGELOG.md` with an empty `Unreleased` section above it; the publish workflow stops otherwise. See the [release changelog policy](policies/development.md#release-changelog).
