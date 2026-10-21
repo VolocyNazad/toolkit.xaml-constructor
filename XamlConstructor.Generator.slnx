@@ -21,6 +21,7 @@
     <File Path="NuGet.config" />
   </Folder>
   <Folder Name="/tests/">
+    <File Path="tests/Directory.Packages.props" />
     <Project Path="tests/XamlConstructor.Tests/XamlConstructor.Tests.csproj" Id="44463214-48bc-4cac-b991-9ba52c528281" />
   </Folder>
   <Project Path="src/XamlConstructor.CodeFixes/XamlConstructor.CodeFixes.csproj" />

@@ -48,8 +48,10 @@ project.
 - Roslyn incremental generator (`IIncrementalGenerator`) + `DiagnosticAnalyzer` +
   `CodeFixProvider`, all targeting `netstandard2.0` (required for analyzers/generators)
 - Central package management (`Directory.Packages.props`,
-  `ManagePackageVersionsCentrally=true`) **is** used here; repositories that do
-  not use central package management pin versions per-`<PackageReference>`.
+  `ManagePackageVersionsCentrally=true`) **is** used here; project packages are
+  versioned in the root file, and `tests/Directory.Packages.props` imports it to
+  version test-only packages separately. Repositories that do not use central
+  package management pin versions per-`<PackageReference>`.
 - Repo-wide global analyzers pinned in `Directory.Packages.props`:
   Roslynator.Analyzers, SonarAnalyzer.CSharp
 - MinVer with the `v` tag prefix, as configured by `MinVerTagPrefix` in
@@ -60,10 +62,12 @@ project.
   CodeFix,SourceGenerators}.Testing` helper packages - those were referenced
   early on but never actually used in test code, so they were dropped
 - `Microsoft.CodeAnalysis` / `.CSharp` / `.CSharp.Workspaces` are exact-pinned
-  (`[4.14.0]`, not a floor) in `Directory.Packages.props` - this is the
-  compiler version the analyzer/generator/code-fix assemblies are built
-  against, and it also governs which C# syntax test sources may use when
-  parsed directly via `CSharpSyntaxTree`/`CSharpCompilation` at test time.
+  (`[4.14.0]`, not a floor) in the CPM files (`Microsoft.CodeAnalysis` in
+  `tests/Directory.Packages.props`, the other two in
+  `Directory.Packages.props`) - this is the compiler version the
+  analyzer/generator/code-fix assemblies are built against, and it also
+  governs which C# syntax test sources may use when parsed directly via
+  `CSharpSyntaxTree`/`CSharpCompilation` at test time.
   `4.14.0` matches the Roslyn version shipped with the latest Visual Studio
   2022 release line, so the analyzer stays loadable by any current VS 2022
   install. Bumping past the VS-2022-compatible range (e.g. into the `5.x`
