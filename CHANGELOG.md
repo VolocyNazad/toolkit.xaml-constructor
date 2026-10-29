@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Move the commit message policy to `docs/policies/commits.md` and require it in the repository validator.
+
 - Document the commit message policy: the Conventional Commits type set, breaking-change markers and subject rules.
 
 - Centralize package versions in `Directory.Packages.props`, add `tests/Directory.Packages.props` for test-only packages, and remove redundant per-project version and analyzer metadata overrides.
