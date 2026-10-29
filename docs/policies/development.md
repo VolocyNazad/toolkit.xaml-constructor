@@ -17,24 +17,14 @@ Commit messages follow Conventional Commits (`<type>(<scope>): <description>`, e
 
 Don't `git push` - commit locally and leave pushing to the user, unless they explicitly ask for a push.
 
-## Release changelog
-
-Before creating a release tag, move the content of `## [Unreleased]` in `CHANGELOG.md` into a new `## [VERSION] - YYYY-MM-DD` section directly below it, where `VERSION` is the tag without a leading `v`, and leave `## [Unreleased]` empty. Commit that change and create the tag on that commit, so the changelog at the tagged commit names the released version and carries no unreleased entries. While moving the entries, review them against the previous release: keep changes a consumer of that release can observe, merge related entries, and drop fixes for behavior that was never released. The publish workflow enforces this before building: it refuses to publish when `## [Unreleased]` contains any entry or when the changelog has no section for the tagged version. Empty category headings under `Unreleased` are tolerated.
-
-## .NET SDK selection
+## Release changelog Branching follows the [branching policy](branching.md): `main` holds the released state, `dev` integrates the next release, and every change reaches them through a short-lived branch and a pull request. Before creating a release tag, move the content of `## [Unreleased]` in `CHANGELOG.md` into a new `## [VERSION] - YYYY-MM-DD` section directly below it, where `VERSION` is the tag without a leading `v`, and leave `## [Unreleased]` empty. Commit that change and create the tag on that commit, so the changelog at the tagged commit names the released version and carries no unreleased entries. While moving the entries, review them against the previous release: keep changes a consumer of that release can observe, merge related entries, and drop fixes for behavior that was never released. The publish workflow enforces this before building: it refuses to publish when `## [Unreleased]` contains any entry or when the changelog has no section for the tagged version. Empty category headings under `Unreleased` are tolerated.  ## .NET SDK selection
 
 Use the repository-root `global.json` for local builds and CI: SDK `10.0.103` or a later stable SDK in the `10.0` major/minor line (`rollForward: latestFeature`, `allowPrerelease: false`). Do not roll forward to another major/minor line without updating this policy and `global.json` together. GitHub Actions setup steps must read `global-json-file: global.json` after checkout. Additional SDKs may be installed to supply runtimes for older test targets; they do not replace the SDK selected by `global.json`. This policy does not change project target frameworks.
 
 ## Solution items
 
 Keep the root solution in sync with existing repository-level documentation, license, Git/editor settings, SDK/NuGet/versioning and shared MSBuild configuration, and root maintenance scripts. Expose root files under `solutionItems`, `.github/` and `scripts/` under matching subfolders, and documentation under `docs/` with its directory hierarchy. Add, rename or remove solution links together with the corresponding files. Include only existing files, once each; exclude local settings, secrets and generated output. Solution templates must follow the same convention.
-## Central package management
-
-Keep project package versions in the root `Directory.Packages.props`. Test-only
-packages belong in `tests/Directory.Packages.props`, which imports the root file;
-do not add `Version` attributes to individual `PackageReference` items.
-
-## Repository validation
+## Central package management  Keep project package versions in the root `Directory.Packages.props`. Test-only packages belong in `tests/Directory.Packages.props`, which imports the root file; do not add `Version` attributes to individual `PackageReference` items.  ## Repository validation
 
 Run `./scripts/Validate-Repository.ps1` after changing repository-level files,
 documentation or the solution. CI runs the same validator. It checks the required
@@ -44,8 +34,4 @@ removed managed files. Solution templates follow the same contract.
 
 ## Formatting baseline
 
-Keep the root `.editorconfig` in the solution and apply its repository-wide encoding, line-ending and trailing-whitespace rules. Repository-specific sections may add stricter language rules. Update the file deliberately when formatting conventions change; do not replace specialized rules with the shared minimum.
-
-## Roslyn compatibility
-
-Distributed analyzers and source generators target Microsoft.CodeAnalysis 4.14, matching Visual Studio 2022 version 17.14. Keep Roslyn references private implementation dependencies and verify analyzer or generator tests before changing this compatibility baseline.
+Keep the root `.editorconfig` in the solution and apply its repository-wide encoding, line-ending and trailing-whitespace rules. Repository-specific sections may add stricter language rules. Update the file deliberately when formatting conventions change; do not replace specialized rules with the shared minimum.  ## Roslyn compatibility  Distributed analyzers and source generators target Microsoft.CodeAnalysis 4.14, matching Visual Studio 2022 version 17.14. Keep Roslyn references private implementation dependencies and verify analyzer or generator tests before changing this compatibility baseline. 
