@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add a testing policy: test kinds, Revit version coverage, naming, isolation and the manual smoke check.
+- Add a testing policy: test kinds, configuration coverage, naming, isolation and the manual smoke check.
 - Add a benchmark policy: when performance is measured, how, and how results are reported.
 
 - Branching policy: `main` holds the released state, `dev` integrates the next release, and changes arrive through feature, fix, release and hotfix branches.
