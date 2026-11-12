@@ -70,6 +70,8 @@ The `XamlConstructor` generation failed.
 
 The type decorated with `XamlConstructor` has no private or protected readonly fields without an initializer, so the generated constructor would be empty.
 
+When a base class already carries `XamlConstructor`, that base class generates the design-mode constructor. A derived type with no readonly fields of its own needs no separate constructor: none is generated and XCONS03 is not reported. A derived type that declares its own readonly fields still gets a constructor for them.
+
 ### XCONS04
 
 The `XamlConstructor` attribute is used on a nested type. Nested types are not supported.
