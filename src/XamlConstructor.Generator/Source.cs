@@ -17,8 +17,8 @@ public static class Source
         using System;
 
         /// <summary>
-        /// Generates an empty constructor for XAML Design Mode.
-        /// All fields and properties will be assigned null!.
+        /// Generates a parameterless constructor for XAML Design Mode.
+        /// Every private or protected readonly field without an initializer is assigned null!.
         /// </summary>
         /// <example>
         /// [XamlConstructor]

@@ -17,7 +17,7 @@ function Require-Link([string]$Document, [string]$Target) {
 }
 
 @('README.md', 'AGENTS.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'global.json',
-  'docs/policies/development.md', 'docs/repository.md',
+  'docs/policies/development.md', 'docs/policies/branching.md', 'docs/policies/commits.md', 'docs/policies/changelog.md', 'docs/policies/testing.md', 'docs/policies/benchmarks.md', 'docs/repository.md',
   'scripts/Validate-Repository.ps1') | ForEach-Object { Require-File $_ }
 Require-One 'NuGet configuration' @('NuGet.config', 'nuget.config')
 Require-One 'license' @('LICENSE', 'LICENSE.md', 'LICENSE.txt')
@@ -34,6 +34,31 @@ Require-Link 'CONTRIBUTING.md' 'docs/repository.md'
 Require-Link 'CONTRIBUTING.md' 'CHANGELOG.md'
 Require-Link 'docs/policies/development.md' '../repository.md'
 Require-Link 'docs/repository.md' 'policies/development.md'
+Require-Link 'AGENTS.md' 'docs/policies/branching.md'
+Require-Link 'README.md' 'docs/policies/branching.md'
+Require-Link 'CONTRIBUTING.md' 'docs/policies/branching.md'
+Require-Link 'docs/policies/development.md' 'branching.md'
+Require-Link 'docs/policies/branching.md' 'changelog.md'
+Require-Link 'AGENTS.md' 'docs/policies/commits.md'
+Require-Link 'README.md' 'docs/policies/commits.md'
+Require-Link 'CONTRIBUTING.md' 'docs/policies/commits.md'
+Require-Link 'docs/policies/development.md' 'commits.md'
+Require-Link 'docs/policies/branching.md' 'commits.md'
+Require-Link 'docs/policies/commits.md' 'development.md'
+Require-Link 'AGENTS.md' 'docs/policies/changelog.md'
+Require-Link 'README.md' 'docs/policies/changelog.md'
+Require-Link 'CONTRIBUTING.md' 'docs/policies/changelog.md'
+Require-Link 'docs/policies/development.md' 'changelog.md'
+Require-Link 'docs/policies/changelog.md' 'development.md'
+Require-Link 'AGENTS.md' 'docs/policies/testing.md'
+Require-Link 'AGENTS.md' 'docs/policies/benchmarks.md'
+Require-Link 'README.md' 'docs/policies/testing.md'
+Require-Link 'README.md' 'docs/policies/benchmarks.md'
+Require-Link 'CONTRIBUTING.md' 'docs/policies/testing.md'
+Require-Link 'docs/policies/development.md' 'testing.md'
+Require-Link 'docs/policies/development.md' 'benchmarks.md'
+Require-Link 'docs/policies/testing.md' 'development.md'
+Require-Link 'docs/policies/benchmarks.md' 'development.md'
 
 $managed = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 $rootNames = @('.gitignore', '.gitattributes', '.editorconfig', '.globalconfig', 'global.json',

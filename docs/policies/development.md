@@ -9,17 +9,21 @@ explicitly to the user and get confirmation before adding it.
 
 If a change affects the folder structure or the tech stack (a new/removed project, a new dependency, a version bump worth recording, a new convention), update the relevant policy and [repository guide](../repository.md) accordingly as part of the same change - don't leave it to a later pass.
 
-Keep `CHANGELOG.md` up to date, following [Keep a Changelog](https://keepachangelog.com/) format. Add an entry under an `## [Unreleased]` heading (grouped into `Added`/`Changed`/`Fixed`/`Removed` as needed) as part of the same change that introduces it - don't leave it to a later pass, and don't wait to be asked. At release time, rename `[Unreleased]` to the version being tagged (matching the same version used in `AnalyzerReleases.Shipped.md` and the git tag) and start a fresh empty `[Unreleased]` heading above it.
+Keep [CHANGELOG.md](../../CHANGELOG.md) up to date as the [changelog policy](changelog.md) requires. When a release adds or changes analyzer rules, record them in `AnalyzerReleases.Shipped.md` under that release version.
 
 Before changing existing tests or writing new ones, ask the user first – confirm what should be covered and how (or that the change is trivial enough not to need it) rather than deciding unilaterally.
 
-Commit messages follow Conventional Commits (`<type>(<scope>): <description>`, e.g. `feat(manifest): ...`, `fix(...): ...`, `docs(agents): ...`, `test(...): ...`, `chore(...): ...`, `refactor(...): ...`) - scope optional but preferred when it clarifies what changed.
+Commit messages follow the [commit message policy](commits.md).
 
 Don't `git push` - commit locally and leave pushing to the user, unless they explicitly ask for a push.
 
-## Release changelog
+Branching follows the [branching policy](branching.md): `main` holds the released state,
+`dev` integrates the next release, and every change reaches them through a short-lived
+branch and a pull request.
 
-Before creating a release tag, move the content of `## [Unreleased]` in `CHANGELOG.md` into a new `## [VERSION] - YYYY-MM-DD` section directly below it, where `VERSION` is the tag without a leading `v`, and leave `## [Unreleased]` empty. Commit that change and create the tag on that commit, so the changelog at the tagged commit names the released version and carries no unreleased entries. While moving the entries, review them against the previous release: keep changes a consumer of that release can observe, merge related entries, and drop fixes for behavior that was never released. The publish workflow enforces this before building: it refuses to publish when `## [Unreleased]` contains any entry or when the changelog has no section for the tagged version. Empty category headings under `Unreleased` are tolerated.
+Tests follow the [testing policy](testing.md): what needs a test, which configurations must be
+covered and how the test projects are laid out. Performance work follows the
+[benchmark policy](benchmarks.md).
 
 ## .NET SDK selection
 

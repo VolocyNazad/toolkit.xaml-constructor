@@ -36,6 +36,12 @@ public sealed class TypeWithoutPartialAnalyzer : DiagnosticAnalyzer
             return;
         }
 
+        if (InheritanceAnalysis.HasXamlConstructorBaseType(symbol)
+            && !TypeDeclarationAnalysis.FindReadonlyFields(typeDeclarationSyntax).Any())
+        {
+            return;
+        }
+
         Location location = typeDeclarationSyntax.Identifier.GetLocation();
 
         if (!TypeDeclarationAnalysis.IsPartial(typeDeclarationSyntax))
