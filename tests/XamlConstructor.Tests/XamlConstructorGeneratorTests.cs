@@ -31,6 +31,97 @@ public sealed class XamlConstructorGeneratorTests
     }
 
     [Fact]
+    public void DoesNotGenerateConstructor_WhenBaseTypeAlreadyHasTheAttribute()
+    {
+        const string source = """
+            namespace Test;
+
+            [XamlConstructor]
+            public partial class BaseViewModel
+            {
+                private readonly string _name;
+            }
+
+            [XamlConstructor]
+            public partial class DerivedViewModel : BaseViewModel
+            {
+            }
+            """;
+
+        GeneratorRunResult result = RunGeneratorForResult(source).Results[0];
+
+        Assert.Empty(result.Diagnostics);
+
+        GeneratedSourceResult generatedSource = Assert.Single(
+            result.GeneratedSources,
+            r => r.HintName.EndsWith(".XamlConstructor.g.cs", StringComparison.Ordinal));
+        Assert.StartsWith("BaseViewModel", generatedSource.HintName, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void DoesNotGenerateConstructor_WhenAnIndirectBaseTypeHasTheAttribute()
+    {
+        const string source = """
+            namespace Test;
+
+            [XamlConstructor]
+            public partial class RootViewModel
+            {
+                private readonly string _name;
+            }
+
+            public class MiddleViewModel : RootViewModel
+            {
+            }
+
+            [XamlConstructor]
+            public partial class LeafViewModel : MiddleViewModel
+            {
+            }
+            """;
+
+        GeneratorRunResult result = RunGeneratorForResult(source).Results[0];
+
+        Assert.Empty(result.Diagnostics);
+
+        GeneratedSourceResult generatedSource = Assert.Single(
+            result.GeneratedSources,
+            r => r.HintName.EndsWith(".XamlConstructor.g.cs", StringComparison.Ordinal));
+        Assert.StartsWith("RootViewModel", generatedSource.HintName, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void GeneratesConstructor_ForOwnReadonlyFields_WhenBaseTypeHasTheAttribute()
+    {
+        const string source = """
+            namespace Test;
+
+            [XamlConstructor]
+            public partial class BaseViewModel
+            {
+                private readonly string _baseName;
+            }
+
+            [XamlConstructor]
+            public partial class DerivedViewModel : BaseViewModel
+            {
+                private readonly string _derivedName;
+            }
+            """;
+
+        GeneratorRunResult result = RunGeneratorForResult(source).Results[0];
+
+        Assert.Empty(result.Diagnostics);
+
+        GeneratedSourceResult derivedSource = Assert.Single(
+            result.GeneratedSources,
+            r => r.HintName.StartsWith("DerivedViewModel", StringComparison.Ordinal));
+        string generated = derivedSource.SourceText.ToString();
+        Assert.Contains("this._derivedName = null!;", generated, StringComparison.Ordinal);
+        Assert.DoesNotContain("_baseName", generated, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void GeneratesPlaceholderComment_AndReportsWarning_WhenNoReadonlyFieldsAreFound()
     {
         const string source = """

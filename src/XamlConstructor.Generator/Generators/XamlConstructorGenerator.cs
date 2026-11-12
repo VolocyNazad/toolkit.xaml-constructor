@@ -12,20 +12,25 @@ public sealed class XamlConstructorGenerator : IIncrementalGenerator
     {
         context.RegisterPostInitializationOutput(i => i.AddSource(Source.AttributeFullName, SourceText.From(Source.AttributeText, Encoding.UTF8)));
 
-        IncrementalValuesProvider<(TypeDeclarationSyntax TypeDeclaration, Compilation Compilation)> typeDeclarations =
+        IncrementalValuesProvider<(TypeDeclarationSyntax TypeDeclaration, INamedTypeSymbol Symbol)> typeDeclarations =
             context.SyntaxProvider
                 .ForAttributeWithMetadataName(
                     Source.AttributeFullName,
                     predicate: static (node, _) => IsSyntaxTargetForGeneration(node),
-                    transform: static (context, _) => (TypeDeclarationSyntax)context.TargetNode)
-                .Where(static i => i is not null)
-                .Combine(context.CompilationProvider);
+                    transform: static (context, _) => ((TypeDeclarationSyntax)context.TargetNode, (INamedTypeSymbol)context.TargetSymbol));
 
         context.RegisterSourceOutput(typeDeclarations, static (context, tuple) =>
         {
             try
             {
-                (TypeDeclarationSyntax typeDeclaration, Compilation _) = tuple;
+                (TypeDeclarationSyntax typeDeclaration, INamedTypeSymbol symbol) = tuple;
+
+                List<FieldDeclarationSyntax> readonlyFields = [.. TypeDeclarationAnalysis.FindReadonlyFields(typeDeclaration)];
+
+                if (InheritanceAnalysis.HasXamlConstructorBaseType(symbol) && readonlyFields.Count == 0)
+                {
+                    return;
+                }
 
                 if (!TypeDeclarationAnalysis.IsPartial(typeDeclaration))
                 {
@@ -54,8 +59,6 @@ public sealed class XamlConstructorGenerator : IIncrementalGenerator
                     context.ReportDiagnostic(diagnostic);
                     return;
                 }
-
-                List<FieldDeclarationSyntax> readonlyFields = [.. TypeDeclarationAnalysis.FindReadonlyFields(typeDeclaration)];
 
                 if (readonlyFields.Count == 0)
                 {

@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Centralize package versions in `Directory.Packages.props`, add `tests/Directory.Packages.props` for test-only packages, and remove redundant per-project version and analyzer metadata overrides.
 
+### Fixed
+
+- XCONS03 is no longer reported for a `[XamlConstructor]` type whose base class already carries the attribute, and a derived type without readonly fields of its own no longer gets an empty generated constructor.
+
 ## [1.4.1] - 2026-09-14
 
 ### Added
