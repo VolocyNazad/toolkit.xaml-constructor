@@ -90,7 +90,7 @@ internal static class DiagnosticTestCases
 
     private static TheoryData<string, string> ToTheoryData(IEnumerable<(string Source, string DiagnosticId, bool BlocksGeneration)> scenarios)
     {
-        TheoryData<string, string> data = new();
+        TheoryData<string, string> data = [];
 
         foreach ((string source, string diagnosticId, bool _) in scenarios)
         {

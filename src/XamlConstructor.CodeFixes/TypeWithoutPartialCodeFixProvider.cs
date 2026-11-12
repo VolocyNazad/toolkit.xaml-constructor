@@ -13,7 +13,7 @@ namespace XamlConstructor.CodeFixes;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeWithoutPartialCodeFixProvider)), Shared]
 public sealed class TypeWithoutPartialCodeFixProvider : CodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(DiagnosticDescriptors.TypeWithoutPartialDiagnosticId);
+    public override ImmutableArray<string> FixableDiagnosticIds => [DiagnosticDescriptors.TypeWithoutPartialDiagnosticId];
 
     public override FixAllProvider GetFixAllProvider()
     {
