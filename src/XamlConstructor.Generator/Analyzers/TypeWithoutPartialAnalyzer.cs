@@ -36,8 +36,12 @@ public sealed class TypeWithoutPartialAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        if (InheritanceAnalysis.HasXamlConstructorBaseType(symbol)
-            && !TypeDeclarationAnalysis.FindReadonlyFields(typeDeclarationSyntax).Any())
+        List<FieldDeclarationSyntax> readonlyFields = [.. TypeDeclarationAnalysis.FindReadonlyFields(typeDeclarationSyntax)];
+        bool hasXamlConstructorBaseType = InheritanceAnalysis.HasXamlConstructorBaseType(symbol);
+
+        if (hasXamlConstructorBaseType
+            && readonlyFields.Count == 0
+            && !TypeDeclarationAnalysis.NeedsGeneratedParameterlessConstructor(typeDeclarationSyntax))
         {
             return;
         }
@@ -68,7 +72,7 @@ public sealed class TypeWithoutPartialAnalyzer : DiagnosticAnalyzer
             context.ReportDiagnostic(diagnostic);
         }
 
-        if (!TypeDeclarationAnalysis.FindReadonlyFields(typeDeclarationSyntax).Any())
+        if (readonlyFields.Count == 0 && !hasXamlConstructorBaseType)
         {
             Diagnostic diagnostic = Diagnostic.Create(DiagnosticDescriptors.NoPrivateReadonlyFieldsRule, location);
             context.ReportDiagnostic(diagnostic);

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-11-12
+
+### Fixed
+
+- Restore the generated parameterless constructor for a `[XamlConstructor]` type that derives from another `[XamlConstructor]` type and declares parameterized constructors. Without it, generated constructors in derived types failed with CS7036, because `base()` had no parameterless overload to call.
+
 ## [1.5.0] - 2026-11-12
 
 ### Added

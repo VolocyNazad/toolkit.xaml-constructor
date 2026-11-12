@@ -33,6 +33,28 @@ internal static class TypeDeclarationAnalysis
             .Any(c => c.ParameterList.Parameters.Count == 0);
     }
 
+    /// <summary>
+    /// A type that declares instance constructors but none of them parameterless has no implicit
+    /// parameterless constructor, so derived types need the generated one to call <c>base()</c>.
+    /// </summary>
+    /// <param name="typeDeclaration">The decorated type declaration to inspect.</param>
+    /// <returns>
+    /// <see langword="true"/> when the type needs a generated parameterless constructor; otherwise
+    /// <see langword="false"/>.
+    /// </returns>
+    public static bool NeedsGeneratedParameterlessConstructor(TypeDeclarationSyntax typeDeclaration)
+    {
+        ConstructorDeclarationSyntax[] instanceConstructors =
+        [
+            .. typeDeclaration.Members
+                .OfType<ConstructorDeclarationSyntax>()
+                .Where(c => !c.Modifiers.Any(SyntaxKind.StaticKeyword)),
+        ];
+
+        return instanceConstructors.Length > 0
+            && !instanceConstructors.Any(c => c.ParameterList.Parameters.Count == 0);
+    }
+
     public static IEnumerable<FieldDeclarationSyntax> FindReadonlyFields(TypeDeclarationSyntax typeDeclaration)
     {
         return typeDeclaration.Members
