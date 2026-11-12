@@ -1,11 +1,9 @@
 # XamlConstructor
 
-[![NuGet](https://img.shields.io/nuget/vpre/XamlConstructor?logo=nuget
-)](https://www.nuget.org/packages/XamlConstructor/)
+[![NuGet](https://img.shields.io/nuget/vpre/XamlConstructor?logo=nuget)](https://www.nuget.org/packages/XamlConstructor/)
 [![GitHub release](https://img.shields.io/github/release/VolocyNazad/toolkit.xaml-constructor.svg?logo=github)](https://github.com/VolocyNazad/toolkit.xaml-constructor/releases/latest)
-[![GitHub license](https://img.shields.io/github/license/VolocyNazad/toolkit.xaml-constructor
-)](https://raw.githubusercontent.com/VolocyNazad/toolkit.xaml-constructor/main/LICENSE)
-![build-and-test.yml](https://github.com/VolocyNazad/toolkit.xaml-constructor/workflows/.github/workflows/build-and-test.yml/badge.svg)
+[![GitHub license](https://img.shields.io/github/license/VolocyNazad/toolkit.xaml-constructor)](https://raw.githubusercontent.com/VolocyNazad/toolkit.xaml-constructor/main/LICENSE)
+![build-and-test.yml](https://github.com/VolocyNazad/toolkit.xaml-constructor/actions/workflows/build-and-test.yml/badge.svg)
 
 C# source generator that generates a constructor from readonly fields in a class or struct for xaml design mode.
 
@@ -21,10 +19,10 @@ The following code:
 namespace Test;
 
 [XamlConstructor]
-public partial class MyClass
+public partial class MyViewModel
 {
     protected readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<MyClass> _logger;
+    private readonly ILogger<MyViewModel> _logger;
     private readonly IService _service;
 }
 ```
@@ -41,13 +39,13 @@ will generate:
 
 namespace Test;
 
-partial class MyClass
+partial class MyViewModel
 {
     /// <summary>
     /// XAML Design Mode constructor - all readonly fields will be null!
     /// </summary>
     [Obsolete("This constructor should only be used by XAML markup, and only in DesignMode.")]
-    public MyClass()
+    public MyViewModel()
     {
         this._serviceProvider = null!;
         this._logger = null!;
@@ -60,7 +58,7 @@ partial class MyClass
 
 ### XCONS01
 
-The `XamlConstructor` attribute is used on a class that is not partial.
+The `XamlConstructor` attribute is used on a type that is not partial.
 
 ### XCONS02
 

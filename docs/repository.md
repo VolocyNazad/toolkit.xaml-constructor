@@ -8,8 +8,8 @@ Read and follow the [development policy](policies/development.md) alongside this
 Source for `XamlConstructor` (NuGet package `XamlConstructor`): a C#
 incremental source generator that emits a parameterless "XAML Design
 Mode" constructor for any class or struct decorated with
-`[XamlConstructor]` and declared `partial`, assigning every private/
-protected readonly field to `null!`. Intended for WPF/XAML view-models
+`[XamlConstructor]` and declared `partial`, assigning every uninitialized
+private/protected readonly field to `null!`. Intended for WPF/XAML view-models
 that need a design-time-only constructor (so the XAML designer can
 instantiate them) without hand-writing and maintaining one. Despite
 living alongside the `toolkit.revit.*` family, it has **no dependency on
@@ -31,7 +31,7 @@ project.
 │   │                                    packs XamlConstructor.Generator.dll and
 │   │                                    XamlConstructor.CodeFixes.dll as analyzers
 │   │                                    and publishes the NuGet package
-│   ├── XamlConstructor.Generator/       the incremental generator (XCONS01/XCONS02
+│   ├── XamlConstructor.Generator/       the incremental generator (XCONS01-XCONS06
 │   │   │                                diagnostics) + the "type without partial" analyzer
 │   │   ├── Analyzers/
 │   │   ├── Extensions/
