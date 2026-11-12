@@ -9,7 +9,7 @@ explicitly to the user and get confirmation before adding it.
 
 If a change affects the folder structure or the tech stack (a new/removed project, a new dependency, a version bump worth recording, a new convention), update the relevant policy and [repository guide](../repository.md) accordingly as part of the same change - don't leave it to a later pass.
 
-Keep [CHANGELOG.md](../../CHANGELOG.md) up to date as the [changelog policy](changelog.md) requires. The released version also matches the version in `AnalyzerReleases.Shipped.md`.
+Keep [CHANGELOG.md](../../CHANGELOG.md) up to date as the [changelog policy](changelog.md) requires. When a release adds or changes analyzer rules, record them in `AnalyzerReleases.Shipped.md` under that release version.
 
 Before changing existing tests or writing new ones, ask the user first – confirm what should be covered and how (or that the change is trivial enough not to need it) rather than deciding unilaterally.
 
