@@ -26,8 +26,11 @@ public sealed class XamlConstructorGenerator : IIncrementalGenerator
                 (TypeDeclarationSyntax typeDeclaration, INamedTypeSymbol symbol) = tuple;
 
                 List<FieldDeclarationSyntax> readonlyFields = [.. TypeDeclarationAnalysis.FindReadonlyFields(typeDeclaration)];
+                bool hasXamlConstructorBaseType = InheritanceAnalysis.HasXamlConstructorBaseType(symbol);
 
-                if (InheritanceAnalysis.HasXamlConstructorBaseType(symbol) && readonlyFields.Count == 0)
+                if (hasXamlConstructorBaseType
+                    && readonlyFields.Count == 0
+                    && !TypeDeclarationAnalysis.NeedsGeneratedParameterlessConstructor(typeDeclaration))
                 {
                     return;
                 }
@@ -60,7 +63,7 @@ public sealed class XamlConstructorGenerator : IIncrementalGenerator
                     return;
                 }
 
-                if (readonlyFields.Count == 0)
+                if (readonlyFields.Count == 0 && !hasXamlConstructorBaseType)
                 {
                     Diagnostic diagnostic = Diagnostic.Create(DiagnosticDescriptors.NoPrivateReadonlyFieldsRule, typeDeclaration.GetLocation());
                     context.ReportDiagnostic(diagnostic);
