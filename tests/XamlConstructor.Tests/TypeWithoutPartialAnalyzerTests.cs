@@ -106,6 +106,43 @@ public sealed class TypeWithoutPartialAnalyzerTests
     }
 
     [Fact]
+    public async Task DoesNotReportDiagnostic_WhenBaseTypeHasTheAttribute_AndTheTypeDeclaresParameterizedConstructors()
+    {
+        const string source = """
+            namespace Test;
+
+            [XamlConstructor]
+            public partial class RootViewModel
+            {
+                protected readonly object _service;
+            }
+
+            [XamlConstructor]
+            public partial class MiddleViewModel : RootViewModel
+            {
+                protected MiddleViewModel(object service)
+                {
+                }
+            }
+
+            [XamlConstructor]
+            public partial class LeafViewModel : MiddleViewModel
+            {
+                private readonly string _name;
+
+                public LeafViewModel(object service)
+                    : base(service)
+                {
+                }
+            }
+            """;
+
+        ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(source);
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
     public async Task ReportsXcons03_WhenBaseTypeDoesNotHaveTheAttribute()
     {
         const string source = """

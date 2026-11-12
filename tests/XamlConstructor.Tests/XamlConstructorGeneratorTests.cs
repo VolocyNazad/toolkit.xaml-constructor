@@ -91,6 +91,49 @@ public sealed class XamlConstructorGeneratorTests
     }
 
     [Fact]
+    public void GeneratesParameterlessConstructor_WhenBaseTypeHasTheAttribute_AndTheTypeDeclaresParameterizedConstructors()
+    {
+        const string source = """
+            namespace Test;
+
+            [XamlConstructor]
+            public partial class RootViewModel
+            {
+                protected readonly object _service;
+            }
+
+            [XamlConstructor]
+            public partial class MiddleViewModel : RootViewModel
+            {
+                protected MiddleViewModel(object service)
+                {
+                }
+            }
+
+            [XamlConstructor]
+            public partial class LeafViewModel : MiddleViewModel
+            {
+                private readonly string _name;
+
+                public LeafViewModel(object service)
+                    : base(service)
+                {
+                }
+            }
+            """;
+
+        GeneratorRunResult result = RunGeneratorForResult(source).Results[0];
+
+        Assert.Empty(result.Diagnostics);
+
+        GeneratedSourceResult middleSource = Assert.Single(
+            result.GeneratedSources,
+            r => r.HintName.StartsWith("MiddleViewModel", StringComparison.Ordinal));
+        Assert.Contains("public MiddleViewModel()", middleSource.SourceText.ToString(), StringComparison.Ordinal);
+        Assert.Contains("// No readonly fields found", middleSource.SourceText.ToString(), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void GeneratesConstructor_ForOwnReadonlyFields_WhenBaseTypeHasTheAttribute()
     {
         const string source = """
@@ -206,6 +249,49 @@ public sealed class XamlConstructorGeneratorTests
             r => r.HintName.StartsWith("GenericViewModel_T", StringComparison.Ordinal));
 
         Assert.Contains("partial class GenericViewModel<T>", generatedSource.SourceText.ToString(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void GeneratedConstructors_Compile_ForADecoratedTypeChainWithParameterizedConstructors()
+    {
+        const string source = """
+            global using System;
+
+            namespace Test;
+
+            [XamlConstructor]
+            public partial class RootViewModel
+            {
+                protected readonly object _service;
+            }
+
+            [XamlConstructor]
+            public abstract partial class MiddleViewModel : RootViewModel
+            {
+                protected MiddleViewModel(object service)
+                {
+                }
+            }
+
+            [XamlConstructor]
+            public partial class LeafViewModel : MiddleViewModel
+            {
+                private readonly string _name;
+
+                internal LeafViewModel(object service)
+                    : base(service)
+                {
+                }
+            }
+            """;
+
+        CSharpCompilation compilation = CompilationFactory.CreateCompilation("GeneratorTests", source);
+        GeneratorDriver driver = CSharpGeneratorDriver.Create(new XamlConstructorGenerator());
+        driver.RunGeneratorsAndUpdateCompilation(compilation, out Compilation output, out _, TestContext.Current.CancellationToken);
+
+        Diagnostic[] errors = [.. output.GetDiagnostics(TestContext.Current.CancellationToken).Where(d => d.Severity == DiagnosticSeverity.Error)];
+
+        Assert.Empty(errors);
     }
 
     [Theory]
