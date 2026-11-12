@@ -17,12 +17,12 @@
     <PackageId>XamlConstructor</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <!--<PackageIcon>logo_128x128.png</PackageIcon>-->
-    <PackageProjectUrl>https://github.com/VolocyNazad/xaml-constructor</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/VolocyNazad/toolkit.xaml-constructor</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageOutputPath>..\..\artifacts\</PackageOutputPath>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/VolocyNazad/xaml-constructor</RepositoryUrl>
-    <PackageReleaseNotes>https://github.com/VolocyNazad/xaml-constructor/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/VolocyNazad/toolkit.xaml-constructor</RepositoryUrl>
+    <PackageReleaseNotes>https://github.com/VolocyNazad/toolkit.xaml-constructor/blob/main/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <!--<None Include="..\..\logo_128x128.png" Pack="true" PackagePath="" Visible="false" />-->
