@@ -5,9 +5,15 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace XamlConstructor.Generator.Generators;
 
+/// <summary>
+/// The incremental generator: emits the <c>XamlConstructorAttribute</c> source into every compilation
+/// and a parameterless design-time constructor for each type that carries the attribute.
+/// </summary>
 [Generator(LanguageNames.CSharp)]
 public sealed class XamlConstructorGenerator : IIncrementalGenerator
 {
+    /// <summary>Registers the attribute output and the per-type constructor output.</summary>
+    /// <param name="context">The pipeline context the generator registers its outputs on.</param>
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(i => i.AddSource(Source.AttributeFullName, SourceText.From(Source.AttributeText, Encoding.UTF8)));

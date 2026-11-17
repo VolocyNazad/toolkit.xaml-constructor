@@ -6,9 +6,14 @@ using XamlConstructor.Generator.Extensions;
 
 namespace XamlConstructor.Generator.Analyzers;
 
+/// <summary>
+/// Reports the declarations that <c>[XamlConstructor]</c> cannot be applied to, so the failure appears
+/// as a diagnostic on the declaration instead of a compile error in generated code.
+/// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class TypeWithoutPartialAnalyzer : DiagnosticAnalyzer
 {
+    /// <summary>The rules this analyzer can report.</summary>
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
         DiagnosticDescriptors.TypeWithoutPartialRule,
         DiagnosticDescriptors.NestedTypeNotSupportedRule,
@@ -16,6 +21,9 @@ public sealed class TypeWithoutPartialAnalyzer : DiagnosticAnalyzer
         DiagnosticDescriptors.ConflictingConstructorRule,
         DiagnosticDescriptors.NoPrivateReadonlyFieldsRule);
 
+    /// <summary>Registers the named-type action that inspects attributed declarations.</summary>
+    /// <param name="context">The analysis context the analyzer registers its actions on.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="context"/> is <see langword="null"/>.</exception>
     public override void Initialize(AnalysisContext context)
     {
         _ = context ?? throw new ArgumentNullException(nameof(context));
