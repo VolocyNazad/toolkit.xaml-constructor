@@ -1,6 +1,6 @@
 namespace XamlConstructor.Generator;
 
-public static class Source
+internal static class Source
 {
     internal const string AttributeFullName = "XamlConstructorAttribute";
 

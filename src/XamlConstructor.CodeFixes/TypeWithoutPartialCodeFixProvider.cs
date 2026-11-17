@@ -10,16 +10,24 @@ using XamlConstructor.Generator;
 
 namespace XamlConstructor.CodeFixes;
 
+/// <summary>
+/// Offers the fix for <c>XCONS01</c>: adds the missing <c>partial</c> modifier to the declared type.
+/// </summary>
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeWithoutPartialCodeFixProvider)), Shared]
 public sealed class TypeWithoutPartialCodeFixProvider : CodeFixProvider
 {
+    /// <summary>The diagnostics this provider can fix.</summary>
     public override ImmutableArray<string> FixableDiagnosticIds => [DiagnosticDescriptors.TypeWithoutPartialDiagnosticId];
 
+    /// <summary>Returns the batch fixer, so the fix applies to every reported declaration at once.</summary>
+    /// <returns>The fix-all provider for this code fix.</returns>
     public override FixAllProvider GetFixAllProvider()
     {
         return WellKnownFixAllProviders.BatchFixer;
     }
 
+    /// <summary>Registers the <c>Make type partial</c> action for the reported declaration.</summary>
+    /// <param name="context">The code-fix context that carries the document and the reported diagnostic.</param>
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         SyntaxNode? root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
